@@ -1,4 +1,4 @@
-file = open('/home/kartaviy/Desktop/code_python/fvth_lab/example.txt', 'r')
+file = open(r'C:\Users\картавый\Desktop\projects\studs\crossplatformprogramming\5\example.txt', 'r')
 file.read(4)
 print(file.readlines())
 print(file.tell())

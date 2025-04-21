@@ -1,2 +1,2 @@
 import os
-os.rename('/home/kartaviy/Desktop/code_python/fvth_lab/file.txt', '/home/kartaviy/Desktop/code_python/fvth_lab/file2.txt')
+os.rename(r'crossplatformprogramming\5\file.txt', r'crossplatformprogramming\5\file2.txt')

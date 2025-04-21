@@ -1,3 +1,3 @@
-file = open('/home/kartaviy/Desktop/code_python/fvth_lab/text.txt', 'r')
+file = open(r'crossplatformprogramming\5\text.txt', 'r')
 print(file.readline())
 print(file.readlines())

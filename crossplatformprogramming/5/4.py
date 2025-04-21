@@ -1,3 +1,5 @@
-file = open('/home/kartaviy/Desktop/code_python/fvth_lab/file.txt', 'w')
+file = open(r'crossplatformprogramming\5\file.txt', 'w')
 file.write('Hello \n world')
 file.close()
+file = open(r'crossplatformprogramming\5\file.txt', 'r')
+print(*file)

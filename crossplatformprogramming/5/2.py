@@ -1,2 +1,2 @@
-file = open('/home/kartaviy/Desktop/code_python/fvth_lab/example.txt', 'r')
+file = open(r'crossplatformprogramming\5\example.txt', 'r')
 print(file.read(5))
