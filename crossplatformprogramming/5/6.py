@@ -1,0 +1,6 @@
+file = open('/home/kartaviy/Desktop/code_python/fvth_lab/example.txt', 'r')
+file.read(4)
+print(file.readlines())
+print(file.tell())
+file.seek(0, 0)
+print(file.readlines())

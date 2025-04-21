@@ -1,0 +1,12 @@
+print("45 * 263 = ", 45 * 263)
+print("85 / 23 = ", 85 / 23)
+print("123 + 4568 = ", 123 + 4568)
+print("7894 - 456 = ", 7894 - 456)
+print("123.35 * 23.45 = ", 123.35 * 23.45)
+
+a = int(input('a = '))
+b = int(input('b = '))
+print("a + b * a // b = ", a + b * a // b)
+print("a - b * a % b = ", a - b * a % b)
+print("a * b- a ** 2 = ", a * b - a ** 2)
+print("a / b- a ** b = ", a / b - a ** b)
