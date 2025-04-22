@@ -1,19 +1,36 @@
-# первые 16 предложений во второй файл. нужно посчитать кол-во гласных и кол-во согласных и вывести их кол-во.
-# в новый файл записать предложения из 1 файла, но каждое нечетное слово развернуть
+import numpy as np
 
-file2 = open(r'crossplatformprogramming/5/besi2.txt', 'w')
+# Значения x от -6 до 6 с шагом 1
+x = np.arange(-6, 7, 1)
 
-with open(r'crossplatformprogramming/5/besi.txt', 'r', encoding='utf-8') as f:
-    data = f.read().strip()
+# Вычисляем y1 и y2 по формулам
+y1 = np.sqrt(1 + 2 * x**2 - np.sin(x)**2)
+y2 = (2 + x) / (np.sqrt(2) + np.exp(x))
 
-besi = list(map(str, data))
-# print(besi)
+# Сумма y
+y = y1 + y2
 
-pr1d6 = []
-count = 0
+# Сортировка y по возрастанию
+y_sorted = np.sort(y)
 
-while count < 16:
-    for i in besi:
-        if  i[len(i) - 1] == '.' or i[len(i) - 1] == '?':
-            count += 1
+# Нахождение минимумов
+min_y1 = np.min(y1)
+min_y2 = np.min(y2)
 
+# Сравнение минимумов
+if min_y1 < min_y2:
+    compare = "min(y1) меньше min(y2)"
+elif min_y1 > min_y2:
+    compare = "min(y1) больше min(y2)"
+else:
+    compare = "min(y1) равно min(y2)"
+
+# Вывод результатов
+print("x:", x)
+print("y1:", y1)
+print("y2:", y2)
+print("y = y1 + y2:", y)
+print("y (sorted):", y_sorted)
+print(f"min(y1) = {min_y1}")
+print(f"min(y2) = {min_y2}")
+print("Сравнение минимумов:", compare)
