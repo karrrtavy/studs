@@ -1,0 +1,13 @@
+from turtle import *
+t = Turtle()
+t.screen.setup(800 ,800)
+t.shape('turtle')
+t.color('blue')
+t.stamp()
+t.color('black')
+t.up()
+t.fd(50)
+t.down()
+t.circle(200, 70)
+t.screen.exitonclick()
+t.screen.mainloop()
