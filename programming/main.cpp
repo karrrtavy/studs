@@ -49,6 +49,8 @@ public:
             // index_pair.first - указывает на КЛЮЧ мапы индексов, в данном случае названия столбцов
             int col_index = getColumnIndex(col_name);
             if (col_index >= 0) indixes[col_name].insert({row[col_index], row_index});
+            //эквивалентно indixes[col_name].insert(std::make_pair(row[col_index], row_index));
+            //или indixes[col_name].insert(pair<string, size_t>(row[col_index], row_index));
         }
         
         return true;
