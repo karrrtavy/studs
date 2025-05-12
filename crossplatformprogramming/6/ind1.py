@@ -1,0 +1,18 @@
+from turtle import *
+t = Turtle()
+t.screen.setup(800, 800)
+t.speed(1000)
+t.up(); t.goto(-300, 0); t.down()
+t.setheading(270); t.circle(50, 360); t.goto(-300, 100)
+t.right(15); t.circle(50, -120); t.up()
+t.goto(-150, -25); t.down(); t.right(60)
+t.fd(150); t.right(150); t.fd(150)
+t.up(); t.goto(-50, -25); t.down()
+t.right(-165); t.fd(150); t.up(); 
+t.goto(0, 50); t.down(); t.right(90)
+t.circle(50, 360); t.up(); t.goto(50, -25)
+t.down(); t.right(-75), t.fd(150)
+t.right(150); t.fd(150); t.right(-180)
+t.fd(70); t.left(75); t.fd(50)
+t.screen.exitonclick()
+t.screen.mainloop()
