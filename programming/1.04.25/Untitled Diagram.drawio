@@ -1,0 +1,49 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.2 Chrome/134.0.6998.178 Electron/35.1.2 Safari/537.36" version="26.2.2">
+  <diagram name="Page-1" id="mcJlF_mJEfOoV_ujcbOL">
+    <mxGraphModel dx="1428" dy="843" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="uhRfle_Ebwo2fVs5VeTz-1" value="Product" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="110" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="uhRfle_Ebwo2fVs5VeTz-2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="140" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="uhRfle_Ebwo2fVs5VeTz-3" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="170" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="uhRfle_Ebwo2fVs5VeTz-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="uhRfle_Ebwo2fVs5VeTz-4" target="uhRfle_Ebwo2fVs5VeTz-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="uhRfle_Ebwo2fVs5VeTz-4" value="ConcreteProduct 1" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="260" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="uhRfle_Ebwo2fVs5VeTz-5" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="290" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="uhRfle_Ebwo2fVs5VeTz-6" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="320" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="uhRfle_Ebwo2fVs5VeTz-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="uhRfle_Ebwo2fVs5VeTz-7" target="uhRfle_Ebwo2fVs5VeTz-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="uhRfle_Ebwo2fVs5VeTz-7" value="ConcreteProduct 2" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="260" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="uhRfle_Ebwo2fVs5VeTz-8" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="290" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="uhRfle_Ebwo2fVs5VeTz-9" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="320" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="uhRfle_Ebwo2fVs5VeTz-12" value="Product - фигура&lt;div&gt;ConcreteProduct -&amp;nbsp; конкретные фигуры&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="440" y="50" width="310" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="uhRfle_Ebwo2fVs5VeTz-13" value="+createProduct(string):Product" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="282" y="168" width="177" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
