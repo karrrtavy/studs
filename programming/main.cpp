@@ -6,12 +6,23 @@
 
 using namespace std;
 
+/*
+хранение данные и индексы
+сначала проверяет индекс таблицы, если индекс есть - используется equal_range для быстрого поиска
+если нет, то выполняется линейный поиск
+индексы автоматически обновляются при добавлении новых данных
+*/
 class Table {
 private:
-    vector<string> header;
-    vector<vector<string>> data;
-    map<string, multimap<string, size_t>> indixes;
+    vector<string> header; //названия колонок
+    vector<vector<string>> data; //данные таблицы (колонки и строки) 
+    map<string, multimap<string, size_t>> indixes; //индексы (ключ-имя колонки, значение-мультимапа значений и индексов строк)
 
+    /*
+    возвращение индекса колонки по имени
+    передаваемый параметр: column -имя искомой колонки
+    int idx = getColumnIndex("C"); вернет '2'
+    */
     int getColumnIndex(const string& column) const {
         for (size_t i = 0; i < header.size(); ++i)
             if (header[i] == column) return i;
@@ -19,8 +30,14 @@ private:
     }
 
 public:
+    //конструктор 
     Table(const vector<string>& header) : header(header) {}
     
+    /*
+    добавление новую строку в таблицу
+    передаваемые параметры: row -вектор значений
+    вернет true, если размер строки соответствует заголовку, иначе false
+    */
     bool addData(const vector<string>& row) {
         if (row.size() != header.size()) return false;
         
@@ -29,7 +46,7 @@ public:
     
         for (auto& index_pair : indixes) {
             const string& col_name = index_pair.first;
-            //index_pair.first - указывает на КЛЮЧ мапы индексов, в данном случае названия столбцов
+            // index_pair.first - указывает на КЛЮЧ мапы индексов, в данном случае названия столбцов
             int col_index = getColumnIndex(col_name);
             if (col_index >= 0) indixes[col_name].insert({row[col_index], row_index});
         }
@@ -37,6 +54,12 @@ public:
         return true;
     }
     
+    /*
+    поиск строк по значению в указанной колонке
+    если есть индекс для колонки - использует его для быстрого поиска, если индекса нет - выполняет линейный поиск
+    передаваемые параметры: column -колонка для поиска, value -значение колонки
+    возвращает указатель на новую таблицу
+    */
     Table* select(const string& column, const string& value) const {
         int colIndex = getColumnIndex(column);
         if (colIndex == -1) return new Table(header);
@@ -63,6 +86,11 @@ public:
         return resultTable;
     }
 
+    /*
+    создание индекса для указанной колонки
+    проверяет существование колонки. если индекс существует - выходит, также создает новый индекс(мультимапу) для всех значений в колонке
+    передаваемые параметры: column -имя для индексации
+    */
     void addIndex(const string& column) {
         int colIndex = getColumnIndex(column);
         if (colIndex == -1) return;
@@ -88,21 +116,36 @@ public:
     }
 };
 
+//управление коллекцией таблиц
 class DB {
 private:
-    map<string, Table*> tables;
+    map<string, Table*> tables; //мапа для таблиц (ключ-имя таблицы, значение-указатель на Table)
 public:
+    /*
+    создание новой таблицы
+    передаваемые параметры: name -имя таблицы, header -заголовок колонок
+    вернет false, если таблица существует, иначе true
+    */
     bool addTable(const string& name, const vector<string> header) {
         if (tables.find(name) != tables.end()) return false;
         tables[name] = new Table(header);
         return true;
     }
+    /*
+    возвращение таблицы по имени
+    передаваемые параметры: name -имя таблицы
+    возвращает указатель на Table или nullptr
+    */
     Table* getTable(const string& name) {
         auto it = tables.find(name);
         if (it == tables.end()) return nullptr;
         return it->second;
     }
     
+    /*
+    деструктор
+    удаляет все объекты Table, созданные через new
+    */
     ~DB() {
         for (auto& pair : tables)
             delete pair.second;
