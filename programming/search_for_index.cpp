@@ -71,12 +71,11 @@ public:
         auto index_it = indixes.find(column);
         if (index_it != indixes.end()) {
             const auto& index = index_it->second;
-            // it->second - указывает на ЗНАЧЕНИЕ mapы indixes, в данном случае значение column (A, B, C, D)
+            // it->second - указывает на ЗНАЧЕНИЕ mapы indixes, в данном случае значение column - его строк
             auto range = index.equal_range(value);  
             // equal_range - алгоритм, находит поддиапазон в диапазоне, в котором все элементы эквивалентны заданному значению
             /*
             при первом поиске: возвращает диапазон для всех пар с ключом D1, затем находит две пары D1 как 0 и 3
-            при повторном поиске: возвращает три пары - 0, 3 и 4
             */
             for (auto it = range.first; it != range.second; ++it)
                 resultTable->addData(data[it->second]);
