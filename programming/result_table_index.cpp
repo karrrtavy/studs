@@ -71,7 +71,7 @@ public:
             if (row[colIndex] == value) resultWithoutIndex.push_back(row);
         }
         auto end1 = high_resolution_clock::now();
-        double timeWithoutIndex = duration_cast<microseconds>(end1 - start1).count();
+        double timeWithoutIndex = duration_cast<nanoseconds>(end1 - start1).count();
         
         // Измерение времени поиска по индексу
         double timeWithIndex = 0;
@@ -85,7 +85,7 @@ public:
             for (auto it = range.first; it != range.second; ++it)
                 resultWithIndex.push_back(data[it->second]);
             auto end2 = high_resolution_clock::now();
-            timeWithIndex = duration_cast<microseconds>(end2 - start2).count();
+            timeWithIndex = duration_cast<nanoseconds>(end2 - start2).count();
         }
         
         return {timeWithoutIndex, timeWithIndex};
@@ -152,7 +152,8 @@ void runExperiment(int rowCount, int valueVariety) {
     
     cout << rowCount << "\t" 
          << valueVariety << "\t" 
-         << times1.first << "\t" 
+         << times1.first
+          << "\t" 
          << times2.second << "\t" 
          << times1.first / max(1.0, times2.second) << endl;
 }
