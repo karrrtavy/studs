@@ -42,59 +42,83 @@
 
 ##################################################################################
 
-from turtle import *
-import math
-t = Turtle()
-t.screen.setup(1000, 1000)
-t.speed(0)
+# from turtle import *
+# import math
+# t = Turtle()
+# t.screen.setup(1000, 1000)
+# t.speed(0)
 
-button = Turtle()
-button.shape('circle')
-button.shapesize(10 )
-button.up()
-button.goto(0, 0)
+# button = Turtle()
+# button.shape('circle')
+# button.shapesize(10 )
+# button.up()
+# button.goto(0, 0)
 
-t.hideturtle()
-t.up()
-t.color('black')
-t.pensize(10)
-t.down()
+# t.hideturtle()
+# t.up()
+# t.color('black')
+# t.pensize(10)
+# t.down()
 
 
 
-def draw_star():
-    def talloval(r, angle):
-        t.left(angle)
-        for _ in range(2):      
-            t.circle(r,90)    
-            t.circle(r/2,90)  
+# def draw_star():
+#     def talloval(r, angle):
+#         t.left(angle)
+#         for _ in range(2):      
+#             t.circle(r,90)    
+#             t.circle(r/2,90)  
 
-    talloval(100, -45); 
-    t.up(); t.goto(xcor() + 100, ycor() + 0); t.down()
-    talloval(100, -60)
-    t.up(); t.goto(xcor() + 150, ycor() - 75); t.down()
-    talloval(100, -75)
-    t.up(); t.goto(xcor() + 75, ycor() - 175); t.down()
-    talloval(100, -90)
-    t.up(); t.goto(xcor() - 25, ycor() - 125); t.down()
-    talloval(100, -75)
+#     talloval(100, -45); 
+#     t.up(); t.goto(xcor() + 100, ycor() + 0); t.down()
+#     talloval(100, -60)
+#     t.up(); t.goto(xcor() + 150, ycor() - 75); t.down()
+#     talloval(100, -75)
+#     t.up(); t.goto(xcor() + 75, ycor() - 175); t.down()
+#     talloval(100, -90)
+#     t.up(); t.goto(xcor() - 25, ycor() - 125); t.down()
+#     talloval(100, -75)
     
-    t.up(); t.right(-22)
-    radius = 270
-    t.goto(-28, -radius + 70)
-    t.down()
-    angle = 180 - 180 / 5
-    for i in range(5):
-        t.forward(radius * 2.1 * math.sin(math.pi / 5))
-        t.left(angle)
+#     t.up(); t.right(-22)
+#     radius = 270
+#     t.goto(-28, -radius + 70)
+#     t.down()
+#     angle = 180 - 180 / 5
+#     for i in range(5):
+#         t.forward(radius * 2.1 * math.sin(math.pi / 5))
+#         t.left(angle)
+
+# def on_click(x, y):
+#     button.hideturtle()
+#     draw_star()
+
+# button.onclick(on_click)
+
+# t.screen.mainloop()
+
+#########################################################################################################
+
+from turtle import *
+t, ct = Turtle(), Turtle()
+t.screen.setup(1000, 1000)
+t.speed(100)
+
+t.hideturtle
+ct.shape('circle')
+ct.shapesize(10)
+
+def figure():
+    t.pensize(10)
+    t.up(); t.circle(100, 180); t.down()
+    for _ in range(5):
+        t.circle(90, 180); t.fd(20); t.circle(90, 180)
+        t.left(108); t.fd(400); t.left(108)
 
 def on_click(x, y):
-    button.hideturtle()
-    draw_star()
+    ct.hideturtle()
+    figure()
 
-button.onclick(on_click)
+ct.onclick(on_click)
 
 t.screen.mainloop()
 
-
-# окно авторизации и регистрации, после успешной рег открывается кредитный кальултор, регистрация в отдельной файл
