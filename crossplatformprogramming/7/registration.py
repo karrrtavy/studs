@@ -10,8 +10,8 @@ import subprocess
 class Registration():
     def __init__(self, appWindow):
         self.appWindow = appWindow
-        self.appWindow.title("Registration")
-        self.appWindow.geometry("400x400")
+        self.appWindow.title("Sign up")
+        self.appWindow.geometry("400x450")
         self.appWindow.resizable(False, False)
 
         self.main_frame = ttk.Frame(appWindow)
@@ -24,23 +24,34 @@ class Registration():
 
         self.appWindow.mainloop()
 
+    def redirect_to_login(self):
+        self.appWindow.destroy()
+
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        login_script = os.path.join(current_dir, "login.py")
+        
+        if sys.platform == "win32":
+            subprocess.Popen([sys.executable, login_script])
+        else:
+            subprocess.Popen(["python3", login_script])
+
     def widgets(self):
         title_label = ttk.Label(
             self.main_frame,
             text='Registration',
-            font=('Arial', 14)
+            font=('Arial', 32)
         )
         title_label.pack(pady=10)
 
-        ttk.Label(self.main_frame, text='Username:').pack(anchor=tk.W, pady=10)
+        ttk.Label(self.main_frame, text='Username:').pack(anchor='center', pady=10, )
         self.in_username = ttk.Entry(self.main_frame, width=30)
         self.in_username.pack(pady=5)
 
-        ttk.Label(self.main_frame, text='Password:').pack(anchor=tk.W, pady=10)
+        ttk.Label(self.main_frame, text='Password:').pack(anchor='center', pady=10)
         self.in_password = ttk.Entry(self.main_frame, width=30, show='*')
         self.in_password.pack(pady=5)
 
-        ttk.Label(self.main_frame, text='Repeat password:').pack(anchor=tk.W, pady=10)
+        ttk.Label(self.main_frame, text='Repeat password:').pack(anchor='center', pady=10)
         self.in_rpassword = ttk.Entry(self.main_frame, width=30, show='*')
         self.in_rpassword.pack(pady=5)
 
@@ -50,6 +61,14 @@ class Registration():
             command=self.register_user
         )
         btn.pack(pady=20)
+
+        btn2 = ttk.Button(
+            self.main_frame,
+            text='Sign in',
+            command=self.redirect_to_login
+        )
+        btn2.pack()
+
 
     def register_user(self):
         username = self.in_username.get().strip()
@@ -67,11 +86,12 @@ class Registration():
             return
         if self.user_exists(username):
             messagebox.showerror('Error', 'User already exist')
+            return
 
         hashed_password = self.hash_password(password)
 
         with open(self.users_file, 'a') as f:
-            f.write(f'{username}:{hashed_password} \n ')
+            f.write(f'{username}:{hashed_password} \n')
 
         messagebox.showinfo('Already', 'You`re registered')
         self.redirect_to_login()
@@ -88,18 +108,6 @@ class Registration():
                 if line.split(':')[0] == username:
                     return True
         return False
-    
-    def redirect_to_login(self):
-        self.appWindow.destroy()
-
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        login_dir = os.path.join(current_dir, "..", "8")
-        login_script = os.path.join(login_dir, "login.py")
-        
-        if sys.platform == "win32":
-            subprocess.Popen([sys.executable, login_script])
-        else:
-            subprocess.Popen(["python3", login_script])
 
 if __name__ == "__main__":
     appWindow = tk.Tk()

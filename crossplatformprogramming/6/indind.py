@@ -121,4 +121,3 @@ def on_click(x, y):
 ct.onclick(on_click)
 
 t.screen.mainloop()
-
