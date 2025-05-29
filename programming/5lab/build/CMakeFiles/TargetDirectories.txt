@@ -1,0 +1,6 @@
+/home/kartaviy/Desktop/studs/programming/5lab/build/CMakeFiles/StaticLib.dir
+/home/kartaviy/Desktop/studs/programming/5lab/build/CMakeFiles/DLL1.dir
+/home/kartaviy/Desktop/studs/programming/5lab/build/CMakeFiles/DLL2.dir
+/home/kartaviy/Desktop/studs/programming/5lab/build/CMakeFiles/MainApp.dir
+/home/kartaviy/Desktop/studs/programming/5lab/build/CMakeFiles/edit_cache.dir
+/home/kartaviy/Desktop/studs/programming/5lab/build/CMakeFiles/rebuild_cache.dir

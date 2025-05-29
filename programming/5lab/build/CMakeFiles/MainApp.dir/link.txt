@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/MainApp.dir/src/main.cpp.o -o MainApp  -Wl,-rpath,/home/kartaviy/Desktop/studs/programming/5lab/build libStaticLib.a libDLL1.so libStaticLib.a 

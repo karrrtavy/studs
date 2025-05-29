@@ -1,0 +1,2 @@
+/usr/bin/ar qc libStaticLib.a CMakeFiles/StaticLib.dir/src/static_lib/DB.cpp.o
+/usr/bin/ranlib libStaticLib.a

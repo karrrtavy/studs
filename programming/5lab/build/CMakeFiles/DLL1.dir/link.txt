@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -shared -Wl,-soname,libDLL1.so -o libDLL1.so CMakeFiles/DLL1.dir/src/dynamic_lib1/DLL1.cpp.o  libStaticLib.a 
