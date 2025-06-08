@@ -25,16 +25,7 @@ def calculate_confidence_intervals(n, M_star, D_star, p_a, p_sigma2):
 
 # Примеры данных
 data = [
-    {"n": 19, "M_star": 1.2, "D_star": 1.3, "p_a": 0.99, "p_sigma2": 0.98},
-    {"n": 13, "M_star": -0.5, "D_star": 2.7, "p_a": 0.98, "p_sigma2": 0.96},
-    {"n": 20, "M_star": 2.3, "D_star": 3.2, "p_a": 0.99, "p_sigma2": 0.98},
-    {"n": 28, "M_star": 3.1, "D_star": 1.2, "p_a": 0.98, "p_sigma2": 0.90},
-    {"n": 25, "M_star": 0.5, "D_star": 1.9, "p_a": 0.98, "p_sigma2": 0.96},
-    {"n": 50, "M_star": -0.7, "D_star": 0.2, "p_a": 0.99, "p_sigma2": 0.98},
     {"n": 100, "M_star": 1.3, "D_star": 0.8, "p_a": 0.98, "p_sigma2": 0.99},
-    {"n": 200, "M_star": -1.2, "D_star": 0.7, "p_a": 0.99, "p_sigma2": 0.98},
-    {"n": 170, "M_star": -3.2, "D_star": 1.4, "p_a": 0.99, "p_sigma2": 0.98},
-    {"n": 90, "M_star": 12.3, "D_star": 1.1, "p_a": 0.98, "p_sigma2": 0.99}
 ]
 
 # Вычисление и вывод результатов
