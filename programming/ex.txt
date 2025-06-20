@@ -1,0 +1,154 @@
+Методичка к экзамену
+
+1. Антипаттерны. Copy&Paste, спаггети код
+Антипаттерн - шаблон неэффективного решения задачи.
+Copy&Paste - создание кода с часто повторяющимеся частями.
+Последствия:
+1) Дубликат кода, который усложняет восприятие программы и размножает ошибки, допущенные в оригинальном коде;
+2) Усложнение исправления ошибки, так как если была допущена ошибка в оригинальном коде, то исправлять придется во всех копиях.
+Решение:
+1) Код-ревью;
+2) Принцип DRY - избегать повторений одного и того же кода, вынос общей логики в отдельную функцию или класс;
+3) Рефакторинг.
+Пример антипаттерна:
+<code>
+int sumInt(const vector<int>& vec) {
+    int sum = 0;
+    for (int num : vec)
+        sum += num;
+    return sum;
+}
+double sumDouble(const vector<double>& vec) {
+    double sum = 0.0;
+    for (double num : vec)
+        sum += num;
+    return sum;
+}
+void main() {
+    vector<int> intVec = {n values};
+    vector<double> doubleVec = {n values};
+    cout << "Sum int: " << sumInt(intVec) << endl;
+    cout << "Sum double: " << sumDouble(doubleVec) << endl;
+    return 0;
+}
+</code>
+Пример исправления:
+<code>
+template <typename T>
+T sum(const vector<T>& vec) {
+    T sum = T();
+    for (const T& num : vec)
+        sum += num;
+    return sum;
+}
+void main() {
+    vector<int> intVec = {n values};
+    vector<double> doubleVec = {n values};
+    cout << "Sum int: " << sum(intVec) << endl;
+    cout << "Sum double: " << sum(doubleVec) << endl;
+    return 0;
+}
+</code>
+Спаггети код - сложный для понимания, слабо структурированный код.
+Причины:
+1) Множество связей (вложенные конструкции, goto, friend );
+2) Неявные зависимости.
+Пример:
+<code>
+void f(int a, int b, int _x) {
+    if (_x) {
+        another operation;
+    } else {
+        another operation;
+    }
+}
+void main() {
+    f(1, 2, x);
+    // something
+    f(1, 2, x);
+    return 0;
+}
+</code>
+
+2. Антипаттерны. Магические числа, hard code, ненужная сложность 
+Магические числа - использование числовых констант в коде.
+Пример:
+<code>
+int a = x * 8;
+int b = c + 8;
+float f = 34.593f;
+float x = a * 34.6f;
+</code>
+Пример исправления (использование именованых констант):
+<code>
+const int NUM_ELEMENTS = 8;
+const int NUM_BITS = 8;
+const int ARRAY_SIZE = 10;
+const float FVALUE = 34.59f;
+// также можно использовать другой метод
+const int NUM_BITS_INT = sizeof(int) * 8;
+</code>
+Hard code - внедрение конкретных значений в код, вместо их вынесения в конфигурационные файлы, константы или базу данных.
+Последствия: усложнение поддержки и изменение программы.
+Пример (условный):
+<code>
+void connectToDB() {
+    string host = "127.0.0.1";
+    int port = 5432; //новость дня, postgres по умл предлагает вашу бд поставить на этот порт
+    string user = "admin";
+    string password = "dayahuyznaet";
+}
+void main() {
+    connectToDB();
+}
+</code>
+Пример исправления (смысл в выносе настроек в конфиг или иное окружение, а затем их подключить):
+<code>
+// у нас например есть какое нибудь окружение, БД, есть метод getenv, который может обращаться к окружению
+void connectToDatabase() {
+    const char* host = getenv("DB_HOST");
+    const char* portStr = getenv("DB_PORT");
+    const char* user = getenv("DB_USER");
+    const char* password = getenv("DB_PASS");
+}
+void main() {
+    connectToDatabase();
+} 
+// смысл в том, чтобы данные не находились в исходниках
+</code>
+Ненужная сложность (неоправданно универсальное решение) - намеренно усложненный код.
+Причины:
+1) Избыток абстракций, классов, паттернов;
+2) Ненужные уровни наследования;
+3) Гибкое решение там, где возможен простой код.
+Пример:
+<code>
+// из проблем: 2 класса для простой проверки, виртуальный метод и динамическая память
+class NumberValidator {
+public:
+    virtual bool validate(int) = 0;
+    virtual ~NumberValidator() {}
+};
+class EvenNumberValidator : public NumberValidator {
+public:
+    bool validate(int num) override {
+        return num % 2 == 0;
+    }
+};
+void main() {
+    NumberValidator* validator = new EvenNumberValidator();
+    cout << validator->validate(4);
+    delete validator;
+}
+</code>
+Пример решения:
+<code>
+bool isEven(int num) {
+    return num % 2 == 0;
+    }
+void main() {
+    cout << isEven(4);
+}
+</code>
+
+3. Препроцессор-компилятор-компоновщик
