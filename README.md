@@ -277,18 +277,18 @@ sort(nums.begin(), nums.end(), [](int a, int b) { return a > b; });
 
 **Пример**:
 ```cpp
-auto x = 5;          // int
-auto y = 3.14;       // double
-auto z = "Hello";    // const char*
+auto x = 5; // int
+auto y = 3.14; // double
+auto z = "Hello"; // const char*
 
 vector<int> vec{1, 2, 3};
-auto it = vec.begin();  // с этим каждый встречался не раз -> vector<int>::iterator
+auto it = vec.begin(); // с этим каждый встречался не раз -> vector<int>::iterator
 
 template <typename T, typename U>
 auto add(T a, U b) -> decltype(a + b) {
     return a + b;
 }
-auto result = add(2, 3.5);  // double
+auto result = add(2, 3.5); // double
 ```
 
 В ней также есть прикол, что она требует явной инициализации, то есть просто объявить <code>auto x;</code> не получится, нужно указать значение. Двигаясь от C++20, auto можно использовать в передаваемых параметрах функций (код с дипсика ясно дает это понять). 
@@ -315,7 +315,7 @@ for(vector<int>::iterator it = v.begin(); it != v.end(); ++it)
 
 cout << endl;
 
-for(int& i : v)     //тот самый цикл for по коллекции в короткой записи
+for(int& i : v) //тот самый цикл for по коллекции в короткой записи
     cout << i << ' ';
 /* объявляем тип итератора по коллекции, и саму коллекцию, 
 работает с контейнерами у которых есть метды begin() и end(),
@@ -420,7 +420,7 @@ class Player {
 public:
     // this неявно считается первым параметром
     // напомню, что такое this - указатель на текущий объект данного класса
-    void move(int dx, int dy);  // dx, dy — входные параметрыуказатель на текущий объект данного класса
+    void move(int dx, int dy); // dx, dy — входные параметрыуказатель на текущий объект данного класса
 };
 ```
 
@@ -452,6 +452,95 @@ Point::Point(int x, int y) : x_(x), y_(y) {}
 ```
 
 ### Перегрузка функций
+**Рекомендации:**
+1. **Четкие различия:**
+   - Перегружайте только когда варианты логически выполняют одну задачу.
+```cpp
+void print(int value);
+void print(const string& value);
+```
+
+2. **Избегание двусмысленности:**
+```cpp
+void process(int x);
+void process(double x); // может вызвать неоднозначность при process(5)
+```
+
+3. **Параметры по умолчанию vs перегрузка:**
+   - Использование перегрузки, когда логика существенно отличается.
+```cpp
+// лучше две функции:
+void connect();
+void connect(const string& url);
+// чем одна с параметром по умолчанию:
+void connect(const string& url = "");
+```
+
+### Классы
+**Стиль GCG:**
+1. **Порядок объявления**:
+```cpp
+class MyClass {
+public: // условный API для пользователей
+protected: // для наследников
+private: // внутренняя реализация
+};
+```
+
+2. **Инкапсуляция:**
+   - Члены класса должны быть `private` по умолчанию;
+   - Используйте геттеры/сеттеры только когда необходимо.
+3. **Размер классов:**
+   - Избегайте "божественных классов" (god objects);
+   - Разделяйте ответственность между несколькими классами.
+4. **Наследование:**
+   - Композиция предпочтительнее наследования.
+
+**Пример неправильного класса**:
+```cpp
+class BadExample {
+public:
+    BadExample(int x) { data = x; } // неявное присваивание
+    
+    void process(int x); // слишком общее название
+    void process(); // совсем другая логика
+    
+    int data; // публичное поле
+};
+```
+
+**Пример правильного класса**:
+```cpp
+class Rational {
+public:
+    explicit Rational(int numerator, int denominator = 1);
+    
+    int numerator() const { return num_; }
+    int denominator() const { return den_; }
+    
+    Rational operator+(const Rational& other) const;
+
+private:
+    int num_;
+    int den_;    
+};
+```
+
+## Шаблоны Проектирования. Определение, назначение. Фабричный метод
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
