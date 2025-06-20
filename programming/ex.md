@@ -178,4 +178,4 @@ void main() {
 
 
 
-![Схема](11.03.25/preproccessing_projects.drawio.png)
+![Схема](programming/11.03.25/preproccessing_projects.drawio.png)
