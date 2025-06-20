@@ -424,7 +424,7 @@ public:
 };
 ```
 
- ## Google Code Guide. Конструкторы, перегрузка функций, классы
+ ## 8. Google Code Guide. Конструкторы, перегрузка функций, классы
  ### Конструкторы
 **Основные правила:**
 1. **Явные конструкторы:**
@@ -526,21 +526,271 @@ private:
 };
 ```
 
-## Шаблоны Проектирования. Определение, назначение. Фабричный метод
+## 9. Шаблоны Проектирования. Определение, назначение. Фабричный метод
+**Шаблоны проектирования** - это хорошее решение типовой задачи, возникающей при разработке.
+**Назначение**:
+- Повышение повторной используемости кода;
+- Упрощение поддержки и модификации системы;
+- Снижение вероятности ошибок;
+- Ускорение процесса разработки.
 
+### Фабричный метод (Factory Method)
+**Относится к**: Порождающим шаблонам, а то есть он создает объекты. Также он использует наследование (делегирование создания подклассам).
+**Назначение**:
+- Определяет интерфейс для создания объекта;
+- Позволяет подклассам изменять тип создаваемых объектов.
 
+**Пример фабричного метода**:
+```cpp
+class DocumentCreator {
+public:
+    virtual Document* createDocument() = 0;
+    virtual ~DocumentCreator() {}
+};
 
+class PDFCreator : public DocumentCreator {
+public:
+    Document* createDocument() override {
+        return new PDFDocument();
+    }
+};
 
+class WordCreator : public DocumentCreator {
+public:
+    Document* createDocument() override {
+        return new WordDocument();
+    }
+};
 
+DocumentCreator* creator = new PDFCreator();
+Document* doc = creator->createDocument();
+```
 
+|Преимущества|Недостатки|
+|------------|----------|
+|Избегает жёсткой привязки к конкретным классам|Усложнение кода (необходимость создания параллельной иерархии классов)|
+|Упрощает добавление новых типов продуктов|Требует предварительного проектирования|
+|Реализует принцип открытости/закрытости||
 
+**Применение:**
+- Когда система должна оставаться независимой от типов создаваемых объектов;
+- Когда нужно предоставить возможность расширения для будущих подклассов;
+- В библиотеках и фреймворках.
 
+## 10. Шаблоны Проектирования. Определение, назначение. Пул объектов
+**Шаблоны проектирования** - это хорошее решение типовой задачи, возникающей при разработке.
+**Назначение**:
+- Повышение повторной используемости кода;
+- Упрощение поддержки и модификации системы;
+- Снижение вероятности ошибок;
+- Ускорение процесса разработки.
 
+### Пул объектов
+**Суть шаблона**: Шаблон нужен для повторного использования объектов вместо их постоянного создания и уничтожения. 
+**Относится к**: Порождающим шаблонам
 
+**Суть проблемы**:
+1. Частое создание/удаление "тяжёлых" объектов (например, подключений к БД)
+2. Высокая стоимость инициализации объектов
+3. Фрагментация памяти
 
+**Пример:**
+ ```cpp
+// предварительное создание и кэширование объектов
+class ConnectionPool {
+private:
+    stack<DatabaseConnection*> pool;
+    mutex poolMutex;
+    
+public:
+    DatabaseConnection* acquire() {
+        lock_guard<mutex> lock(poolMutex);
+        if (pool.empty()) {
+            return new DatabaseConnection();
+        }
+        auto* conn = pool.top();
+        pool.pop();
+        return conn;
+    }
+    
+    void release(DatabaseConnection* conn) {
+        lock_guard<mutex> lock(poolMutex);
+        pool.push(conn);
+    }
+    
+    ~ConnectionPool() {
+        while (!pool.empty()) {
+            delete pool.top();
+            pool.pop();
+        }
+    }
+};
 
+ConnectionPool pool;
+auto* conn = pool.acquire();
+conn->executeQuery("...");
+pool.release(conn);
+ ```
 
+**Особенности:**
+- Экономия времени на создании объектов;
+- Снижение нагрузки на сборщик мусора;
+- Контроль над количеством экземпляров.
 
+|Преимущества|Недостатки|
+|------------|----------|
+|Экономия времени на создании объектов|Усложнение кода|
+|Снижение нагрузки на сборщик мусора|Необходимость ручного управления объектами|
+|Контроль над количеством экземпляров|Риск "утечки" объектов (если не вернуть в пул)|
+
+## 11. Шаблоны Проектирования. Определение, назначение. Наблюдатель
+**Шаблоны проектирования** - это хорошее решение типовой задачи, возникающей при разработке.
+**Назначение**:
+- Повышение повторной используемости кода;
+- Упрощение поддержки и модификации системы;
+- Снижение вероятности ошибок;
+- Ускорение процесса разработки.
+
+### Наблюдатель (Observer)
+
+**Относится к**: Поведенческим шаблонам
+**Суть проблемы**:
+- Необходимость уведомления множества объектов об изменениях;
+- Жесткая связь между объектами;
+- Неэффективные механизмы опроса.
+
+**Пример решения:**
+```cpp
+class Document {};
+class Figure {};
+class Point {};
+
+class InputObserver {
+public:
+    virtual void onKeyPressed(string key) {}
+    virtual void onMouseMoved(Point position) {}
+    virtual void onMousePressed(string button) {}
+};
+
+class Observer {
+public:
+    // virtual void update(Document* doc) = 0;
+    virtual void onChangeProperties(Document* doc, Figure* f) {}
+    
+    virtual void onSetLink(Figure* parent, Figure* child) {} 
+    virtual void onRemoveLink(Figure* parent, Figure* child) {} 
+
+    virtual void onAddFigure(Figure* f) {}
+    virtual void onRemoveFigure(Figure* f) {}
+};
+
+class FigureCountObserver : public Observer {
+public:
+    void onAddFigure(Figure* f) {}
+    void onRemoveFigure(Figure* f) {}
+};
+
+class DocumentSctructureObserver : public Observer {
+public:    
+    void onSetLink(Figure* parent, Figure* child) {} 
+    void onRemoveLink(Figure* parent, Figure* child) {} 
+    void onAddFigure(Figure* f) {}
+    void onRemoveFigure(Figure* f) {}
+};
+
+class LogObserver : public Observer {
+public:
+    void onChangeProperties(Document* doc, Figure* f) {}
+    void onSetLink(Figure* parent, Figure* child) {} 
+    void onRemoveLink(Figure* parent, Figure* child) {} 
+    void onAddFigure(Figure* f) {}
+    void onRemoveFigure(Figure* f) {}
+}; 
+```
+
+|Преимущества|Недостатки|
+|------------|----------|
+|Слабая связность между компонентами|Риск производительности при большом числе наблюдателей|
+
+**Применения:**
+- Уведомления;
+- Логирование;
+- Сохранение последнего действия.
+
+![Схема наблюдателя](programming/observer1.png)
+
+**Другой пример + его схема** (мне он больше нравится):
+```cpp
+class Document;
+
+class Observer {
+public:
+    virtual void update(Document* doc) = 0;
+};
+
+class Document {
+    vector<int> state;
+    vector<Observer*> observers;
+    void notify() {
+        for (int i =0; i < observers.size(); ++i)
+            observers[i]->update(this);
+    }
+public:
+    void add(int a) {
+        state.push_back(a);
+        notify();
+    }
+    virtual void getState(Observer* o) = 0;
+
+    void remove(int index) {
+        state.erase(state.begin() + index);
+        notify();
+    }
+    void attach(Observer* o) {
+        observers.push_back(o);
+    }
+    void dettach(Observer* o) {
+        observers.erase(find(observers.begin(), observers.end(), o));
+    }
+};
+
+class PrintObserver : public Observer {
+public:
+    void update(Document* doc) {
+        vector<int>& state = doc->getState();
+        for (int i = 0; i < state.size(); ++i)
+            cout << state[i] << ' ';
+        cout << endl;
+};
+
+class SumObserver : public Observer {
+public:
+    void update(Document* doc) {
+        int summ = 0;
+        vector<int>& state = doc->getState();
+        for (int i = 0; i < state.size(); ++i) 
+            summ += state[i];
+        cout << "Summ: " << summ << endl; 
+    }
+};
+
+void main(){
+    Document doc;
+    
+    PrintObserver po;
+    doc.attach(&po);
+
+    SumObserver so;
+    doc.attach(&so);
+
+    for (int i = 0; i < 10; ++i)
+        doc.add(i);
+}
+```
+
+![Схема наблюдателя](programming/observer2.png)
+
+## 12. Отладка программ. Научный метод отладки
 
 
 
