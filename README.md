@@ -10,7 +10,14 @@
 6. [Google Code Guide: Страж включения, зависимости](#6-google-code-guide-страж-включения-зависимости)
 7. [Google Code Guide: Встроенные функции, порядок параметров](#7-google-code-guide-встроенные-функции-порядок-параметров)
 8. [Google Code Guide: Конструкторы, перегрузка функций, классы](#8-google-code-guide-конструкторы-перегрузка-функций-классы)
-
+9. [Шаблоны проектирования: Фабричный метод](#9-шаблоны-проектирования-фабричный-метод)
+10. [Шаблоны проектирования: Пул объектов](#10-шаблоны-проектирования-пул-объектов)
+11. [Шаблоны проектирования: Наблюдатель](#11-шаблоны-проектирования-наблюдатель)
+12. [Отладка программ: Научный метод](#12-отладка-программ-научный-метод)
+13. [Отладка программ: Поиск дефектов](#13-отладка-программ-поиск-дефектов)
+14. [Отладка программ: Метод грубой силы](#14-отладка-программ-метод-грубой-силы)
+15. [Рефакторинг: Определение, причины](#15-рефакторинг-определение-причины)
+16. [Рефакторинг: Определение, примеры](#16-рефакторинг-определение-примеры)
 
 ## 1. Антипаттерны: Copy&Paste, спаггети-код
 **Антипаттерн** — шаблон неэффективного решения задачи.
@@ -791,21 +798,343 @@ void main(){
 ![Схема наблюдателя](programming/observer2.png)
 
 ## 12. Отладка программ. Научный метод отладки
+### Определение отладки
+**Отладка (debugging)** — процесс выявления, локализации и устранения ошибок в программном коде. 
 
+**Ключевые аспекты**:
+- Репродукция ошибки
+- Локализация источника
+- Понимание контекста
+- Верификация исправления
 
+### Научный метод отладки (по Дэвиду Агану)
 
+#### 1. Формулировка гипотезы
+```cpp
+// Пример: программа падает при обработке больших файлов
+// Гипотеза: "Ошибка возникает при размере файла > 2GB из-за переполнения int"
+```
 
+#### 2. Предсказание поведения
+```cpp
+// Если гипотеза верна, то:
+// - При файле 1.9GB программа работает
+// - При файле 2.1GB — падает
+// - В логах должно быть значение > INT_MAX
+```
 
+#### 3. Экспериментальная проверка
+Инструменты:
+- Минимальный воспроизводимый пример
+- Логирование:
+    ```cpp
+    cout << "File size: " << fileSize << " (max: " << INT_MAX << ")";
+    ```
+- Отладочные точки:
+    ```cpp
+    #define DEBUG_LOG(x) cerr << #x << " = " << (x) << endl
+    DEBUG_LOG(bufferSize);
+    ```
 
+## 13. Отладка программ. Поиск дефектов
+### Основные стратегии поиска дефектов
 
+#### 1. Воспроизведение ошибки
+**Минимальный воспроизводимый пример**:
+  ```cpp
+  // Вместо:
+  complexApp.processData("big_dataset.csv");
+  
+  // Используйте:
+  vector<int> testData = {1, 2, 3}; // Минимальные данные для воспроизведения
+  testFunction(testData);
+  ```
 
+#### 2. Логирование состояния
+**Инструментарий:**
+```cpp
+#define DEBUG_LOG(x) \
+  cerr << __FILE__ << ":" << __LINE__ << " " << #x << "=" << x << endl
 
+void processTransaction(Account& acc) {
+    DEBUG_LOG(acc.balance); // Выведет: account.cpp:42 acc.balance=100
+    // ...
+}
+```
+#### 3. Контрольные точки
+**Техника "разделяй и властвуй":**
+```cpp
+bool isDataValid(const Data& d) {
+    // Проверка 1
+    if (!check1(d)) {
+        cerr << "Failed check1 at " << __LINE__ << endl;
+        return false;
+    }
+    // Проверка 2
+    if (!check2(d)) {
+        cerr << "Failed check2 at " << __LINE__ << endl;
+        return false;
+    }
+    return true;
+}
+```
 
+## 14. Отладка программ. Отладка методом грубой силы
+### Суть метода
+**Отладка грубой силы** (Brute Force Debugging) — это подход, при котором:
+- Систематически проверяются все возможные источники ошибки
+- Используются массовые проверки и "лобовые" решения
+- Применяется при невозможности быстро локализовать проблему
 
+### Когда применять
+1. При невоспроизводимых/случайных ошибках
+2. Для сложных системных сбоев
+3. Когда традиционные методы не работают
+4. В критически важных компонентах
 
+### Основные техники
 
+#### 1. Полное логирование
+```cpp
+// Включение детального логгирования
+#define DEBUG_MODE 1
 
+void processData(Data* data) {
+    #if DEBUG_MODE
+    log("Enter processData, ptr=" + to_string(reinterpret_cast<uintptr_t>(data)));
+    #endif
+    
+    if (!data) {
+        #if DEBUG_MODE
+        log("Null pointer in processData");
+        #endif
+        return;
+    }
+    // ...
+}
+```
 
+## 15. Рефакторинг. Определение, причины
+**Рефакторинг** - изменение структуры программы без изменения наблюдаемого поведения, направленное на улучшение качества кода.
+**Причины проведения рефакторинга:**
+- дублирвоание кода (пр. два похожих блока);
+- большой объем методов и функций ();
+- большой цикл или большая глубины вложенных циклов ();
+- класс имеет плохую связанность (); 
+    ```cpp
+    // неверно:
+    class Rect {
+    public:
+        void draw();
+        void loadFromFile(); убрано с помощью FileManager
+        void saveToFile(); убрано с помощью FileManager
 
+        void calculate(); убрано с помощью Algorythm
+    };
+    // верно:
+    class Figure {
+    public:
+        void draw(Rect* r);
+    };
+    class FileManager {
+    public:
+        Rect* loadRect(string fileName)
+        void saveRect(Rect* r, string fileName);
+        ... другие объекты ...
+    };
+    class Algorythm {
+    public:
+        static void algorythm_1(Rect* r);
+    };
 
+    // интерфейс класса формируется абстракцией
+    ```
+- метод принимает слишком много параметров  ();
+- при изменении программы требуется вносить изменения в несколких классах (); 
+    ```cpp
+    class Figure
+    class Rect
+    ...
+    class Circle
+    class X
+    ```
+- необходимо изменять несколько иерархий классов ();
+- приходиться параллельно изменять несколько блоков case / if-else;
+    ```cpp
+    class Client {
+    public:
+        virtual void doSomething() {}
+    };
+    class ClientReguelar : public Client {};
+    class ClientVIP : public Client {};
 
+    int main() {
+        //рефакторим
+        if(clientType == 1)
+            ...
+        else if(clientType == 2)
+            ...
+        ...
+
+        Client* c = new ClientVIP();
+        ...
+        c->doSomething;
+    }
+    ```
+- dsродственные элементы данных используемые вместе не объедененны в класс ();
+    ```cpp
+    class Point2f {};
+    class Vector2f {
+    public:
+        float x, y;
+    };
+    class Figure {
+        Vector2f position;
+    };
+
+    void f(int x, int y) {
+        
+    }
+    ```
+- метод se больше элементов другого класса, чем своего собственного ();
+- элементарный тип данных перегружен ();
+    ```
+    int x = 100; рублей
+    int y = 20; градусов
+    int z = 10; яблок
+    ```
+- класс имеет ограниченную функциональность ();
+- бродячие данные ();
+
+## 16. Рефакторинг. Определение, примеры
+**Рефакторинг** - изменение структуры программы без изменения наблюдаемого поведения, направленное на улучшение качества кода, также можно привести принципы SOLID.
+
+### Примеры
+#### 1. Извлечение метода (Extract Method)
+**До**:
+```cpp
+void printReport() {
+    // Заголовок
+    cout << "********************" << endl;
+    cout << "*** Sales Report ***" << endl;
+    cout << "********************" << endl;
+    
+    // Данные
+    for (const auto& sale : sales) {
+        cout << sale.date << " - " << sale.amount << endl;
+    }
+    
+    // Итого
+    cout << "---------------------" << endl;
+    cout << "Total: " << calculateTotal() << endl;
+}
+```
+**После**:
+```cpp
+void printHeader() {
+    cout << "********************" << endl;
+    cout << "*** Sales Report ***" << endl;
+    cout << "********************" << endl;
+}
+
+void printSalesData() {
+    for (const auto& sale : sales) {
+        cout << sale.date << " - " << sale.amount << endl;
+    }
+}
+
+void printFooter() {
+    cout << "---------------------" << endl;
+    cout << "Total: " << calculateTotal() << endl;
+}
+
+void printReport() {
+    printHeader();
+    printSalesData();
+    printFooter();
+}
+```
+#### 2. Замена магического числа константой
+**До**:
+```cpp
+double calculateCircleArea(double radius) {
+    return 3.14159 * radius * radius;
+}
+```
+**После**:
+```cpp
+const double PI = 3.14159;
+
+double calculateCircleArea(double radius) {
+    return PI * radius * radius;
+}
+```
+#### 3. Замена условных выражений
+**До**:
+```cpp
+if (user.age > 18 && user.age < 65 && user.isActive && !user.isBanned) {
+    // ...
+}
+```
+**После**:
+```cpp
+bool isEligibleForDiscount(const User& user) {
+    return user.age > 18 
+        && user.age < 65 
+        && user.isActive 
+        && !user.isBanned;
+}
+
+if (isEligibleForDiscount(user)) {
+    // ...
+}
+```
+#### 4. Замена кода ошибки исключением
+**До**:
+```cpp
+int processData(Data* data) {
+    if (!data) return -1;
+    if (data->size == 0) return -2;
+    
+    // Обработка
+    return 0; // Успех
+}
+```
+**После**:
+```cpp
+void processData(Data& data) {
+    if (data.size == 0) {
+        throw std::invalid_argument("Empty data");
+    }
+    
+    // Обработка
+}
+```
+#### 5. Введение параметра объекта
+**До**:
+```cpp
+void drawCircle(int x, int y, int radius, Color color) {
+    // ...
+}
+```
+**После**:
+```cpp
+struct Circle {
+    Point center;
+    int radius;
+    Color color;
+};
+
+void drawCircle(const Circle& circle) {
+    // ...
+}
+```
+
+### Инструменты рефакторинга
+**Автоматизированные:**
+- Встроенные в IDE (CLion, Visual Studio)
+- Clang-Tidy
+
+**Ручные:**
+- Регулярные code review
+- Статический анализ кода
